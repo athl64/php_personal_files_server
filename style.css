@@ -1,0 +1,227 @@
+html {
+    height: 100%;
+    min-width: 1024px;
+    position: relative;
+    padding: 0px;
+}
+.all {
+    width: 100%;
+    min-height: 100%;
+    position: relative;
+    text-align: left;
+    color: #000000;
+    padding: 0px;
+    padding-bottom: 32px;
+    margin: 0px;
+    margin-bottom: 0px;
+    border: solid 0px #000000;
+}
+.header {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    padding: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 7px;
+    color: #ffffff;
+    background-color: #85A3FF;
+    background: linear-gradient(to right, #C2D1FF, #3366FF, #C2D1FF);
+}
+.footer {
+    position: absolute;
+    bottom: 0px;
+    height: 30px;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    background-color: #85A3FF;
+    color: #000000;
+    text-align: center;
+    clear: both;
+}
+.nav_container {
+    width: 100%;
+    position: relative;
+    margin: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0px;
+    text-align:center;
+    clear: both;
+}
+.nav {
+    width: 150px;
+    position: relative;
+    background-color: #FFCC00;
+    color: #000000;
+    margin: 0px;
+    padding:0px;
+    text-align: center;
+    display: inline-block;
+    transition: background-color 0.5s;
+}
+.nav:hover {
+    background-color: #FF6600;
+}
+.body_content {
+    width: 100%;
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    color: #000000;
+    text-align: left;
+}
+.table_in {
+    width: 100%;
+    border: solid 0px #000000;
+    text-align: left;
+    vertical-align: middle;
+    color: #000000;
+    border: solid 0px #000000;
+    border-collapse: collapse;
+    padding: 0px;
+    margin: 0px;
+}
+.tr_in {
+    background-color: #D2E6FC;
+    transition: background-color 0.2s;
+}
+.tr_in:hover {
+    background-color: #C7E0FC;
+}
+.td_in {
+    padding: 0px;
+    margin: 0px;
+    border: solid 0px #000000;
+}
+.td_in_num {
+    padding: 0px;
+    margin: 0px;
+    border: solid 0px #000000;
+    width: 30px;
+    padding-left: 10px;
+}
+.td_in_selected {
+    padding: 0px;
+    margin: 0px;
+    border: solid 0px #000000;
+    width: 40px;
+    padding-right: 10px;
+}
+.td_in_info {
+    padding: 0px;
+    margin: 0px;
+    border: solid 0px #000000;
+    width: 200px;
+}
+.th_in_prewiev {
+    padding: 0px;
+    margin: 0px;
+    border: solid 0px #000000;
+    width: 50px;
+}
+.td_in_prewiev {
+    padding: 0px;
+    margin: 0px;
+    border: solid 0px #000000;
+    width: 50px;
+    height: 50px;
+}
+.thead_in {
+    border: solid 0px #000000;
+    color: #ffffff;
+    background-color: #000000;
+    margin: 0px;
+    padding: 0px;
+}
+.img_icon {
+    width: 50px;
+    height: 50px;
+}
+.div_1 {
+    width:100%;
+    height: auto;
+    position: relative;
+    padding: 0px;
+    margin: 0px;
+    border: solid 0px #000000;
+}
+.div_1_1 {
+    width:90%;
+    height: auto;
+    position: relative;
+    padding: 0px;
+    margin: 0px;
+    margin-left: 40px;
+    margin-right: 40px;
+    border: solid 0px #000000;
+    background: rgba(249,255,138,0.4);
+}
+.div_panel {
+    width: 100%;
+    height: 45px;
+    position: relative;
+    padding: 0px;
+    margin: 0px;
+    float: right;
+    clear: both;
+    border: solid 0px #000000;
+}
+.div_panel_button {
+    width: 90px;
+    height: 30px;
+    position: relative;
+    display: inline-block;
+    margin: 5px;
+    padding: 0px;
+    float: right;
+    border: solid 0px #000000;
+    transition: background-color 0.3s;
+    background-color: #000000;
+    text-align: center;
+    cursor: default;
+    color: #ffffff;
+}
+.div_panel_button:hover {
+    background-color: #000dfb;
+}
+.up_button {
+    position: absolute;
+    margin: 0px;
+    margin-right: 0px;
+    padding: 0px;
+    width: 50px;
+    right: 0px;
+}
+.p_uploaded {
+    text-align: center;
+    color: #fa0120;
+}
+.a_file:active {
+    color: #000000;
+}
+.a_file:hover {
+    color: #000000;
+}
+.a_file:visited {
+    color: #000000;
+}
+.a_file:link {
+    color: #000000;
+}
+.a_uploaded {
+    transition: color 0.3s linear;
+}
+.a_uploaded:active {
+    color: #ff0f0f;
+}
+.a_uploaded:visited {
+    color: #ff0f0f;
+}
+.a_uploaded:link {
+    color: #ff0f0f;
+}
+.a_uploaded:hover {
+    color: #010de0;
+}
