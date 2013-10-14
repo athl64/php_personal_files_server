@@ -72,6 +72,14 @@ html {
     color: #000000;
     text-align: left;
 }
+#body_content_files {
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    border: solid 0px #000000;
+    background-color: transparent;
+    display: block;
+}
 .table_in {
     width: 100%;
     border: solid 0px #000000;

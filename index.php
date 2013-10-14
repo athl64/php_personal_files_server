@@ -4,24 +4,25 @@ header('Content-type: text/html; charset=UTF-8');
 date_default_timezone_set("Etc/GMT-3");
 $today = date("r");
 /* ------------------------------------------begin_file_upload----------------------------------------------------------------- */
+$str_fnames = $_POST["f_names"];
+$str_command = $_POST["command"];
+
         $fname = $_FILES["fname"]["name"];
         $tmp_fname = $_FILES["fname"]["tmp_name"];
         $uploaded_link = "";
         
-    if($tmp_fname != "")
+    if($str_command == "upload" && $tmp_fname != "")
     {
         move_uploaded_file($tmp_fname,"uploads/" . iconv("utf-8","cp1251",$fname));/* fucking windows */
         /*move_uploaded_file($tmp_fname,"uploads/" . $fname);*/ /* unix */
         /*echo "<a href=\"uploads/" . $fname . "\">" . $fname . "</a>";*/ /* debug */
-        $uploaded_link = "<p class=\"p_uploaded\"><a href=\"uploads/$fname\" class=\"a_uploaded\">$fname</a></p>";
+        $uploaded_link = "<p class=\"p_uploaded\">uploaded:<br><a href=\"uploads/$fname\" class=\"a_uploaded\">$fname</a></p>";
     }
 /* ------------------------------------------end_file_upload----------------------------------------------------------------- */
 /* ------------------------------------------begin_file_operation----------------------------------------------------------------- */
-$str_fnames = $_POST["f_names"];
-$str_command = $_POST["command"];
 $str_fnames_p;
 
-if($str_command !="" && $str_fnames != "") {
+if($str_command =="delete" && $str_fnames != "") {
     $array_fnames = explode("\n",$str_fnames);
     if($str_command == "delete") {
         foreach($array_fnames as $each_fname) {
@@ -34,8 +35,8 @@ if($str_command !="" && $str_fnames != "") {
         }
     }
 }
-if($str_fnames != "") {
-    $str_fnames_p = "<p class=\"p_uploaded\">" . str_replace("\n","<br>",$str_fnames) . "</p>";
+if($str_command =="delete" && $str_fnames != "") {
+    $str_fnames_p = "<p class=\"p_uploaded\">deleted:<br>" . str_replace("\n","<br>",$str_fnames) . "</p>";
 }
 /* ------------------------------------------end_file_operation----------------------------------------------------------------- */
 
@@ -53,23 +54,24 @@ echo "<!DOCTYPE html>
     </header>
     <section>
         <div class=\"nav_container\">
-        <a href=\"index.php\"><div class=\"nav\">
+        <!--<a href=\"index.php\"><div class=\"nav\">
             status
-        </div></a>
-        <a href=\"index.php\"><div class=\"nav\">
+        </div></a>-->
+        <a href=\"#\"><div class=\"nav\" id=\"j_button_files\">
             files
         </div></a>
-        <a href=\"index.php\"><div class=\"nav\">
+        <a href=\"#\"><div class=\"nav\" id=\"j_button_text\">
             text
         </div></a>
         </div>
         <div class=\"body_content\">
+        <div id=\"body_content_files\">
             <div class=\"div_1\">
                 <div class=\"div_1_1\">
                 <form name=\"form_name\" method=\"post\" action=\"index.php\" enctype=\"multipart/form-data\" id=\"main_form\">
                     <p>
-                        <input type=\"file\" name=\"fname\">
-                        <input type=\"submit\" value=\"send\" class=\"up_button\">
+                        <input type=\"file\" name=\"fname\" id=\"in_file_name\">
+                        <input type=\"button\" value=\"send\" class=\"up_button\" onclick=\"command_send('upload')\">
                     </p>
                     <input type=\"hidden\" name=\"command\" id=\"command\"/>
                     <input type=\"hidden\" name=\"f_names\" id=\"f_names\"/>
@@ -92,7 +94,7 @@ echo "<!DOCTYPE html>
                             <!--<td class=\"th_in_prewiev\"></td>-->
                             <td>name</td>
                             <td class=\"td_in_info\">info</td>
-                            <td class=\"td_in_selected\">check</td>
+                            <td class=\"td_in_selected\">delete</td>
                         </tr>
                     </thead>
                     <!-- begin table content -->
@@ -137,6 +139,7 @@ foreach($array_ls as $current_pos) {
 echo "
                     <!-- end table content -->
                 </table>
+        </div><!-- body_content_files -->
         </div>
     </section>
     <footer class=\"footer\">
