@@ -1,68 +1,165 @@
-var arr_sel = new Array();
-var arr_sel = [];
-var str = "";
+/* ajax get txt begin*/
+var xmlhttp;
 
-function selected_files() {
+function send_request(url,cfunc) {
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+xmlhttp.onreadystatechange = cfunc;
+xmlhttp.open("GET",url,true);
+xmlhttp.setRequestHeader("Cache-Control", "no-cache");
+xmlhttp.send();
+document.getElementById("body_content_container").innerHTML = "loading messages, wait...";
+}
+
+function txt_download() {
+    send_request("txt.txt",response_repaired)
+}
+
+function response_repaired() {
+    var str,str_out;
     str = "";
-    var tb = document.getElementById("tb_all").rows.length;
-    for(var i=0;i<=tb;i++) {
-        try {
-            var current_ckeck = document.getElementById("s_" + i);
-            if (current_ckeck.checked == true) {
-                var current_fname = document.getElementById("href_" + i).innerHTML;
-                arr_sel.push(current_fname);
-                str += current_fname + "\n";
-                }
-        } catch (e) {
-            /*alert(e);*/
+    str_out = "";
+    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        str = xmlhttp.responseText;
+        };
+    str_out = str.replace(/\n/g,"<br>");
+    document.getElementById("body_content_container").innerHTML = str_out;
+}
+/* ajax get txt end*/
+
+function shw_txt_w() {
+    var txt_w = document.getElementById("txt_send");
+    txt_w.style.display = "block";
+    document.getElementById("txt_area").focus();
+}
+
+function hd_txt_w() {
+    var txt_w = document.getElementById("txt_send");
+    txt_w.style.display = "none";
+}
+
+function shw_file_w() {
+    var txt_w = document.getElementById("file_send");
+    txt_w.style.display = "block";
+}
+
+function hd_file_w() {
+    var txt_w = document.getElementById("file_send");
+    txt_w.style.display = "none";
+}
+
+function scroll_bottom() {
+    window.scroll(0,document.getElementById("body_content_container").scrollHeight );
+}
+
+function scroll_top() {
+    window.scroll(0,0 );
+}
+/* simplier ajax :) begin*/
+function send_msg() {
+    var txtarea = document.getElementById("txt_area");
+    var body_content = document.getElementById("body_content_container");
+    var xhttp = new XMLHttpRequest();
+    
+    xhttp.onreadystatechange = function () {
+        body_content.innerHTML = xhttp.responseText;
+        hd_txt_w();
+        if (xhttp.status == 200 && xhttp.readyState == 4) {
+            txtarea.value = "";
         }
     }
-    if (str == "") {
-        str = "files doesn't selected";
+    xhttp.open("POST", "txt.php", true);
+    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhttp.send("str_name=" + txtarea.value);/* important parameters in send() */
+    
+    document.getElementById("body_content_container").innerHTML = "sending message, wait...";
+    
+}
+/* simplier ajax :) end*/
+
+function selected_files() {
+    var files = document.getElementById("file_name");
+    var div_list = document.getElementById("file_send_selected");
+    div_list.innerHTML = "";
+    for (var i=0;i<files.files.length;i++) {
+        div_list.innerHTML += files.files[i].name + "<br>";
     }
-    /*var r = confirm("You want to delete this files:\n\n" + str + "\nAre you sure?");*/
-    return str;
 }
-function command_send(act_from_button) {
-    var mainform = document.getElementById("main_form");
-    var command = document.getElementById("command");
-    var f_names = document.getElementById("f_names");
-    var in_f_names = document.getElementById("in_file_name");
-    /* --------------------------------------------------- */
-    switch (act_from_button) {
-        case "upload": {
-            if (in_f_names.value != "") {
-                var r = confirm("You want to upload this file:\n\n" + in_f_names.value + "\n\nAre you sure?");
-                if (r) {
-                    command.value = act_from_button;
-                    f_names.value = selected_files();
-                    mainform.submit();
-                    }
-                    } else {
-                        alert("you must select file(s)");
-                        }
-                        break;
-                        }
-        case "delete": {
-            if (selected_files() != "files doesn't selected") {
-                var r = confirm("You want to delete this files:\n\n" + str + "\nAre you sure?");
-                if (r) {
-                    command.value = act_from_button;
-                    f_names.value = selected_files();
-                    mainform.submit();
-                    }
-                    } else {
-                        alert("you must select file(s)");
-                        }
-                        break;
-                        }
-    }/* switch end */
+
+function files_list_request() {
+    document.getElementById("body_content_container").innerHTML = "";
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() { document.getElementById("body_content_container").innerHTML = xhr.responseText; };
+    xhr.open("POST","ls.php");
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8');
+    xhr.send("list=true");
+    document.getElementById("body_content_container").innerHTML = "wait for listing...";
 }
-function testing_div_in() {
-    var div_body_content_files = document.getElementById("body_content_files");
-    div_body_content_files.setAttribute("style","display: none;");
+
+function status_request() {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() { document.getElementById("top_status_bar").innerHTML = xhr.responseText; };
+    xhr.open("POST","stat.php");
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8');
+    xhr.send("status=true");
+    document.getElementById("top_status_bar").innerHTML = "requesting uptime...";
 }
-function testing_div_out() {
-    var div_body_content_files = document.getElementById("body_content_files");
-    div_body_content_files.setAttribute("style","display: block;");
+
+function file_action(name,action) {
+    var xhr = new XMLHttpRequest();
+    var response;
+    xhr.onload = function() {
+        response = xhr.responseText;
+        if (response == "removed") {
+            files_list_request();
+        } else {
+            alert("strange\n" + response + "\ntry reload page");
+        }
+    }
+    xhr.open("POST","f_act.php");
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8');
+    xhr.send("fname=" + name + "&act=" + action);
+}
+
+//function files_upload() {
+//    document.getElementById("body_content_container").innerHTML = "";
+//    var f_names = document.getElementById("file_name");
+//    var fr = FileReader();
+//    
+//    fr.onload = function(event) {
+//        for(var i=0;i<f_names.files[0].length;i+=1024) {
+//        var str_file = event.target.result;
+//        var xhttp_f = new XMLHttpRequest();
+//        xhttp_f.onreadystatechange = function() { document.getElementById("body_content_container").innerHTML += xhttp_f.responseText; hd_file_w(); };
+//        xhttp_f.open("POST", "up.php", true);
+//        xhttp_f.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8');
+//        xhttp_f.setRequestHeader('file_name',encodeURIComponent(f_names.files[0].name));
+//        xhttp_f.setRequestHeader('file_part_n',i);
+//        xhttp_f.send(str_file.slice(i,i+1024));
+//        }
+//    };
+//    fr.readAsArrayBuffer(f_names.files[0]);
+//}
+
+//working multiple upload below
+function files_upload() {
+    document.getElementById("body_content_container").innerHTML = "";
+    var f_names = document.getElementById("file_name");
+    
+    for (var i=0;i<f_names.files.length;i++) {
+        
+    var fd = new FormData();
+    var xhttp_f = new XMLHttpRequest();
+    
+        fd.append("fname",f_names.files[i].name);
+        fd.append("f_content",f_names.files[i]);
+        xhttp_f.onreadystatechange = function() { /*document.getElementById("body_content_container").innerHTML = xhttp_f.responseText;*/files_list_request(); hd_file_w(); };
+        xhttp_f.open("POST", "up.php", true);
+        //xhttp_f.setRequestHeader('Content-Type', 'multipart/form-data');
+        //xhttp_f.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8');
+        //xhttp_f.setRequestHeader('file_name',encodeURIComponent(f_names.files[0].name));
+        //xhttp_f.setRequestHeader('file_part_n',i);
+        xhttp_f.send(fd);
+    }
 }
