@@ -106,20 +106,61 @@ function status_request() {
     document.getElementById("top_status_bar").innerHTML = "requesting uptime...";
 }
 
-function file_action(name,action) {
+function file_action(name,newname_id,action) {
     var xhr = new XMLHttpRequest();
     var response;
-    xhr.onload = function() {
-        response = xhr.responseText;
-        if (response == "removed") {
-            files_list_request();
-        } else {
-            alert("strange\n" + response + "\ntry reload page");
+    var newfn_in = document.getElementById(newname_id);
+    var newname = newfn_in.value;
+    
+    if (action == "rename") {
+        xhr.onload = function() {
+            response = xhr.responseText;
+            if (response == "removed" || response == "renamed") {
+                files_list_request();
+            } else {
+                alert("strange\n" + response + "\ntry reload page");
+            }
         }
+        xhr.open("POST","f_act.php");
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8');
+        xhr.send("fname=" + name + "&fname_new=" + newname + "&act=" + action);
     }
-    xhr.open("POST","f_act.php");
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8');
-    xhr.send("fname=" + name + "&act=" + action);
+    
+    if (action == "remove") {
+        newname = "";
+        xhr.onload = function() {
+            response = xhr.responseText;
+            if (response == "removed" || response == "renamed") {
+                files_list_request();
+            } else {
+                alert("strange\n" + response + "\ntry reload page");
+            }
+        }
+        xhr.open("POST","f_act.php");
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8');
+        xhr.send("fname=" + name + "&fname_new=" + newname + "&act=" + action);
+    }
+}
+
+function shw_f_ren(f_in_id) {
+    var div = document.getElementById(f_in_id);
+    if (div.style.height != "50px") {
+        div.style.height = "50px";
+        div.style.width = "550px";
+        div.style.backgroundColor = "#ff9598";
+    } else {
+        div.style.height = "15px";
+        div.style.width = "50px";
+        div.style.backgroundColor = "#e2e2e2";
+    }
+}
+
+/* prevent hidding of child input when it clicked but allow to hide span when it clicked  */
+function dont_show_up(in_f_id) {
+        var div = document.getElementById(in_f_id);
+        div.onclick = function(e) {
+        e.stopPropagation();
+        }
 }
 
 //function files_upload() {
